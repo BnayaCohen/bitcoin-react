@@ -49,7 +49,7 @@ export class ContactEdit extends Component {
                     <input value={contact.email} onChange={this.handleChange} type="email" name="email" id="email" />
                     <label htmlFor="phone">Phone</label>
                     <input value={contact.phone} onChange={this.handleChange} type="text" name="phone" id="phone" />
-                    <button>Save</button>
+                    <button className='btn'>Save</button>
                 </form>
             </section>
         )

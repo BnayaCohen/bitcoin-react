@@ -39,7 +39,7 @@ export class ContactPage extends Component {
         return (
             <div className='contact-page'>
                 <ContactFilter onChangeFilter={this.onChangeFilter} />
-                <Link to="/contact/edit">Add Contact</Link>
+                <Link className='btn' to="/contact/edit">Add Contact</Link>
                 <ContactList onRemoveContact={this.onRemoveContact} contacts={contacts} />
             </div>
         )

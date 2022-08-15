@@ -3,8 +3,8 @@ import { NavLink, withRouter } from "react-router-dom";
 function _AppHeader() {
   return (
     <header className='app-header'>
-      <section className='container flex column space-between'>
-        <h1>BIT coin</h1>
+      <section className="container flex space-between align-center">
+        <div className="logo"></div>
         <nav className="flex">
           <NavLink exact to='/' >Home</NavLink>
           <NavLink to='/contact'>Contacts</NavLink>

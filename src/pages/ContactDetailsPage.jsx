@@ -39,8 +39,8 @@ export class ContactDetailsPage extends Component {
         <p>Name: {contact.name}</p>
         <p>Phone: {contact.phone}</p>
         <p>Email: {contact.email}</p>
-        <button onClick={this.onBack}>Back</button>
-        <Link to={'/contact/edit/' + contact._id} >Edit contact</Link>
+        <button className='btn' onClick={this.onBack}>Back</button>
+        <Link className='btn' to={'/contact/edit/' + contact._id} >Edit contact</Link>
       </article>
     )
   }

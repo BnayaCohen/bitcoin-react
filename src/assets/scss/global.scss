@@ -17,27 +17,26 @@
 @import "pages/home-page";
 @import "pages/contact-page";
 @import "pages/statistic-page";
+@import "pages/contact-edit";
 
 // Components
 @import "cmps/contact-list";
 @import "cmps/contact-preview";
 @import "cmps/contact-filter";
+@import "cmps/app-header";
 
 .main-app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    .app-header {
-        background-color: #ffa915;
-    }
 
     main {
         flex-grow: 1;
     }
 
-    > footer {
+    >footer {
         text-align: center;
-        background-color: rgba(220, 220, 220, 0.168);
-        // color: white;
+        background: url(https://bitcoin.org/img/hero/overview-tablet.svg?1528322191) bottom;
+        color: #9D9D9D;
     }
 }
