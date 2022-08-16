@@ -55,7 +55,7 @@ a {
   border-radius: 2px;
   letter-spacing: 1.5px;
   margin: 4px;
-  
+
   &:hover {
     text-decoration: none;
     background: #F9A136;
@@ -69,6 +69,17 @@ a {
 input {
   font-family: inherit;
   text-align: inherit;
+  text-align: left;
+  width: 230px;
+  border-radius: 5px;
+  outline: #F7931A;
+  background-color: #00000009;
+  border: 1px solid #F7931A;
+  padding: 5px 8px;
+
+  &:focus {
+    border: 1px solid #b06810;
+  }
 }
 
 // MAC like scrollbar
