@@ -55,9 +55,9 @@ export class ContactDetailsPage extends Component {
       <>
         <article className='contact-details'>
           <img src={`https://robohash.org/${contact._id}`} alt="" />
-          <p>Name: {contact.name}</p>
-          <p>Phone: {contact.phone}</p>
-          <p>Email: {contact.email}</p>
+          <h1>{contact.name}</h1>
+          <p><span>Phone: </span>{contact.phone}</p>
+          <p><span>Email: </span>{contact.email}</p>
           <button className='btn' onClick={this.onBack}>Back</button>
           <Link className='btn' to={'/contact/edit/' + contact._id} >Edit contact</Link>
         </article>

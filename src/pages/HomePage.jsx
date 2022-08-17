@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { connect } from "react-redux";
 import { bitcoinService } from '../services/bitcoinService.js'
 import { MovesList } from '../cmps/MovesList';
-import { loadUser } from '../store/actions/userActions'
+import { loadUser,logout } from '../store/actions/userActions'
 
 export class _HomePage extends Component {
   state = {
@@ -15,13 +15,17 @@ export class _HomePage extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps);
     if (prevProps.loggedInUser !== this.props.loggedInUser) {
       this.setState({
         user: this.props.loggedInUser,
         bitcoinRate: await bitcoinService.getRate(this.props.loggedInUser.coins)
       })
     }
+  }
+
+  onLogout(){
+    console.log(this.props);
+    this.props.history.push('/signup')
   }
 
   get movesList() {
@@ -39,7 +43,7 @@ export class _HomePage extends Component {
 
         <h3>You have {user.coins} coins</h3>
         <h3>BTC: {bitcoinRate}</h3>
-
+        <button className='btn' onClick={()=>this.onLogout()}>Logout</button>
         <MovesList title={'Your last 3 moves:'} movesList={this.movesList} />
       </section>
     )
@@ -54,6 +58,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   loadUser,
+  logout,
 }
 
 export const HomePage = connect(mapStateToProps, mapDispatchToProps)(_HomePage)

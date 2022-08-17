@@ -14,6 +14,7 @@ export class SignupPage extends Component {
 
   onSignup = async (ev) => {
     ev.preventDefault()
+    if (this.state.name === '') return
     userService.signup(this.state.name)
     this.props.history.push('/')
   }
@@ -27,8 +28,9 @@ export class SignupPage extends Component {
 
     return (
       <section className='signup-page'>
-        <img src="https://bitcoin.org/img/icons/opengraph.png?1657703267" alt="" />
-        <h1>Please enter your name:</h1>
+        <h2>Get started with Bitcoin</h2>
+        <img src="https://bitcoin.org/img/helper/helper-illustration.svg" alt="" />
+        <h1>Please enter your name</h1>
         <form onSubmit={this.onSignup}>
           <input ref={this.inputRefFunc} type="text" value={name} onChange={this.handleChange} name="name" />
           <button className='btn'>Sign up</button>
