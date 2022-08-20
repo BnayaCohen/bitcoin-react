@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { MovesList } from '../cmps/MovesList';
 import { TransferFund } from '../cmps/TransferFund';
 import { loadContact } from '../store/actions/contactActions'
+import { updateUser } from '../store/actions/userActions'
 import { userService } from '../services/userService.js'
 
 export function ContactDetailsPage() {
@@ -30,6 +31,7 @@ export function ContactDetailsPage() {
 
   const onTransferCoins = (contact, amount) => {
     const user = userService.addMove(contact, amount)
+    dispatch(updateUser(user))
     loadMovesList(user)
   }
 

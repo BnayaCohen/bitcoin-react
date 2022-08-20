@@ -12,7 +12,7 @@ export function SignupPage() {
   const handleChange = ({ target }) => {
     const field = target.name
     const value = target.value
-    if (field === name) setName(value)
+    if (field === 'name') setName(value)
   }
 
   const onSignup = async (ev) => {

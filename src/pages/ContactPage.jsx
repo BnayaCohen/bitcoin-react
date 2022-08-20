@@ -15,7 +15,7 @@ export function ContactPage() {
     }, [])
 
     const onRemoveContact = async (contactId) => {
-        await dispatch(removeContact(contactId))
+        dispatch(await removeContact(contactId))
     }
 
     const onChangeFilter = (filterBy) => {

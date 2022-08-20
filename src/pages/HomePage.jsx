@@ -13,11 +13,17 @@ export function HomePage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  useEffect(async () => {
-    dispatch(loadUser())
-    setBitcoinRate(await bitcoinService.getRate(user.coins))
-    setMovesList(user.moves.filter((move, i) => i < 3))
-  }, [])
+  useEffect(() => {
+    (async () => {
+      if (!user) {
+        dispatch(loadUser())
+        return
+      }
+      setBitcoinRate(await bitcoinService.getRate(user.coins))
+      setMovesList(user.moves.filter((move, i) => i < 3))
+    })()
+
+  }, [user])
 
   const onLogout = () => {
     dispatch(logout())
