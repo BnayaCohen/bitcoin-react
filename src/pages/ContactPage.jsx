@@ -1,47 +1,34 @@
-import { Component } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ContactFilter } from '../cmps/ContactFilter'
 import { ContactList } from '../cmps/ContactList'
-import { contactService } from '../services/contactService'
+import { loadContacts, removeContact, setFilterBy } from '../store/actions/contactActions'
 
-export class ContactPage extends Component {
-    state = {
-        contacts: null,
-        filterBy: null
+export function ContactPage() {
+
+    const contacts = useSelector(state => state.contactModule.contacts)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(loadContacts())
+    }, [])
+
+    const onRemoveContact = async (contactId) => {
+        await dispatch(removeContact(contactId))
     }
 
-    componentDidMount() {
-        this.loadContacts()
+    const onChangeFilter = (filterBy) => {
+        dispatch(setFilterBy(filterBy))
+        dispatch(loadContacts())
     }
 
-    async loadContacts() {
-        try {
-            const contacts = await contactService.getContacts(this.state.filterBy)
-            this.setState({ contacts })
-        } catch (err) {
-            console.log('err:', err)
-        }
-    }
-
-    onRemoveContact = async (contactId) => {
-        await contactService.deleteContact(contactId)
-        this.loadContacts()
-    }
-
-    onChangeFilter = (filterBy) => {
-        this.setState({ filterBy }, this.loadContacts)
-    }
-
-    render() {
-        const { contacts } = this.state
-
-        if (!contacts) return <div>Loading...</div>
-        return (
-            <div className='contact-page'>
-                <ContactFilter onChangeFilter={this.onChangeFilter} />
-                <Link className='btn' to="/contact/edit">Add Contact</Link>
-                <ContactList onRemoveContact={this.onRemoveContact} contacts={contacts} />
-            </div>
-        )
-    }
+    if (!contacts) return <div>Loading...</div>
+    return (
+        <div className='contact-page'>
+            <ContactFilter onChangeFilter={onChangeFilter} />
+            <Link className='btn' to="/contact/edit">Add Contact</Link>
+            <ContactList onRemoveContact={onRemoveContact} contacts={contacts} />
+        </div>
+    )
 }

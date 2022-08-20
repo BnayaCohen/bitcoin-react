@@ -1,4 +1,4 @@
-import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
 
 import './assets/scss/global.scss'
 import { AppHeader } from './cmps/AppHeader';
@@ -9,10 +9,10 @@ import { ContactDetailsPage } from './pages/ContactDetailsPage';
 import { ContactEdit } from './pages/ContactEdit';
 import { StatisticPage } from './pages/StatisticPage';
 
-const PrivateRoute = (props) => {
+const PrivateRoute = ({children}) => {
     const isAdmin = true
     // return isAdmin ? <Route path={props.path} component={props.component} /> : <Redirect to='/' />
-    return isAdmin ? <Route {...props} /> : <Redirect to='/' />
+    return isAdmin ? children : <Navigate to='/' />
 }
 
 function App() {
@@ -22,14 +22,19 @@ function App() {
                 <AppHeader />
 
                 <main className='container'>
-                    <Switch>
-                        <Route path='/signup' component={SignupPage} />
-                        <Route path='/contact/edit/:id?' component={ContactEdit} />
-                        <PrivateRoute path='/contact/:id' component={ContactDetailsPage} />
-                        <Route path='/contact' component={ContactPage} />
-                        <Route path='/statistics' component={StatisticPage} />
-                        <Route path='/' component={HomePage} />
-                    </Switch>
+                    <Routes>
+                        <Route path='/' element={<HomePage />} />
+                        <Route path='/signup' element={<SignupPage />} />
+                        <Route path='/contact/edit/:id' element={<ContactEdit />} />
+                        <Route path='/contact/edit/' element={<ContactEdit />} />
+                        <Route path='/contact/:id' element={
+                        <PrivateRoute>
+                            <ContactDetailsPage />
+                        </PrivateRoute>
+                        } />
+                        <Route path='/contact' element={<ContactPage />} />
+                        <Route path='/statistics' element={<StatisticPage />} />
+                    </Routes>
                 </main>
 
                 <footer>

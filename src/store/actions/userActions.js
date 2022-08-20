@@ -19,3 +19,10 @@ export function logout() {
         dispatch({ type: 'SET_USER', user: null })
     }
 }
+
+export function signup(name) {
+    return async (dispatch) => {
+        const user = userService.signup(name)
+        dispatch({ type: 'SET_USER', user })
+    }
+}

@@ -1,69 +1,51 @@
-import { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { MovesList } from '../cmps/MovesList';
 import { TransferFund } from '../cmps/TransferFund';
-import { contactService } from '../services/contactService.js'
+import { loadContact } from '../store/actions/contactActions'
 import { userService } from '../services/userService.js'
 
-export class ContactDetailsPage extends Component {
+export function ContactDetailsPage() {
 
-  state = {
-    currUser: null,
-    contact: null,
-    movesList: [],
+  const [movesList, setMovesList] = useState([])
+  const currUser = useSelector(state => state.userModule.loggedInUser)
+  const currContact = useSelector(state => state.contactModule.currContact)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const params = useParams()
+
+  useEffect(() => {
+    dispatch(loadContact(params.id))
+  }, [params.id])
+
+  const loadMovesList = (user) => {
+    const userMoves = user.moves.filter(move => move.toId === currContact._id)
+    setMovesList(userMoves)
   }
 
-  componentDidMount() {
-    this.loadContact()
+  const onBack = () => {
+    navigate('/contact')
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.match.params.id !== this.props.match.params.id) {
-      this.loadContact()
-    }
-  }
-
-  loadContact = async () => {
-    const contactId = this.props.match.params.id
-    const contact = await contactService.getContactById(contactId)
-    const user = userService.getUser()
-    this.setState({ contact, currUser: user }, () => { this.loadMovesList(user) })
-
-  }
-
-  loadMovesList = (user) => {
-    const { contact } = this.state
-    const userMoves = user.moves.filter(move => move.toId === contact._id)
-    this.setState({ movesList: userMoves, currUser: user })
-  }
-
-  onBack = () => {
-    this.props.history.push('/contact')
-    // this.props.history.goBack()
-  }
-
-  onTransferCoins = (contact, amount) => {
+  const onTransferCoins = (contact, amount) => {
     const user = userService.addMove(contact, amount)
-    this.loadMovesList(user)
+    loadMovesList(user)
   }
 
-  render() {
-    const { contact, currUser, movesList } = this.state
-
-    if (!contact) return <div>Loading...</div>
-    return (
-      <>
-        <article className='contact-details'>
-          <img src={`https://robohash.org/${contact._id}`} alt="" />
-          <h1>{contact.name}</h1>
-          <p><span>Phone: </span>{contact.phone}</p>
-          <p><span>Email: </span>{contact.email}</p>
-          <button className='btn' onClick={this.onBack}>Back</button>
-          <Link className='btn' to={'/contact/edit/' + contact._id} >Edit contact</Link>
-        </article>
-        <TransferFund contact={contact} maxCoins={currUser.coins} onTransferCoins={this.onTransferCoins} />
-        <MovesList title={'Your Moves:'} movesList={movesList} />
-      </>
-    )
-  }
+  if (!currContact) return <div>Loading...</div>
+  return (
+    <>
+      <article className='contact-details'>
+        <img src={`https://robohash.org/${currContact._id}`} alt="" />
+        <h1>{currContact.name}</h1>
+        <p><span>Phone: </span>{currContact.phone}</p>
+        <p><span>Email: </span>{currContact.email}</p>
+        <button className='btn' onClick={onBack}>Back</button>
+        <Link className='btn' to={'/contact/edit/' + currContact._id} >Edit contact</Link>
+      </article>
+      <TransferFund contact={currContact} maxCoins={currUser.coins} onTransferCoins={onTransferCoins} />
+      <MovesList title={'Your Moves:'} movesList={movesList} />
+    </>
+  )
 }

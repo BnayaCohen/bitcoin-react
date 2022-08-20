@@ -1,41 +1,40 @@
-import { Component } from 'react'
-import { userService } from '../services/userService.js'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { signup } from '../store/actions/userActions'
 
-export class SignupPage extends Component {
-  state = {
-    name: '',
-  }
+export function SignupPage() {
 
-  handleChange = ({ target }) => {
+  const [name, setName] = useState('')
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleChange = ({ target }) => {
     const field = target.name
     const value = target.value
-    this.setState(prevState => ({ ...prevState, [field]: value }))
+    if (field === name) setName(value)
   }
 
-  onSignup = async (ev) => {
+  const onSignup = async (ev) => {
     ev.preventDefault()
-    if (this.state.name === '') return
-    userService.signup(this.state.name)
-    this.props.history.push('/')
+    if (name === '') return
+    dispatch(signup(name))
+    navigate('/')
   }
 
-  inputRefFunc = (elInput) => {
+  const inputRefFunc = (elInput) => {
     elInput && elInput.focus()
   }
 
-  render() {
-    const { name } = this.state
-
-    return (
-      <section className='signup-page'>
-        <h2>Get started with Bitcoin</h2>
-        <img src="https://bitcoin.org/img/helper/helper-illustration.svg" alt="" />
-        <h1>Please enter your name</h1>
-        <form onSubmit={this.onSignup}>
-          <input ref={this.inputRefFunc} type="text" value={name} onChange={this.handleChange} name="name" />
-          <button className='btn'>Sign up</button>
-        </form>
-      </section>
-    )
-  }
+  return (
+    <section className='signup-page'>
+      <h2>Get started with Bitcoin</h2>
+      <img src="https://bitcoin.org/img/helper/helper-illustration.svg" alt="" />
+      <h1>Please enter your name</h1>
+      <form onSubmit={onSignup}>
+        <input ref={inputRefFunc} type="text" value={name} onChange={handleChange} name="name" />
+        <button className='btn'>Sign up</button>
+      </form>
+    </section>
+  )
 }

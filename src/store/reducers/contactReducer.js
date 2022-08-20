@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
     contacts: null,
+    currContact: null,
     filterBy: null
 }
 
@@ -12,6 +13,12 @@ export function contactReducer(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 contacts: action.contacts
+            }
+
+        case 'SET_CONTACT':
+            return {
+                ...state,
+                currContact: action.contact
             }
 
         case 'ADD_CONTACT':

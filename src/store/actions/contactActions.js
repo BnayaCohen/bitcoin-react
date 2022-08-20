@@ -14,6 +14,18 @@ export function loadContacts() {
     }
 }
 
+export function loadContact(contactId) {
+
+    return async (dispatch) => {
+        try {
+            const contact = await contactService.getContactById(contactId)
+            dispatch({ type: 'SET_CONTACT', contact })
+        } catch (err) {
+            console.log('err:', err)
+        }
+    }
+}
+
 export function removeContact(contactId) {
 
     return async (dispatch, getState) => {
